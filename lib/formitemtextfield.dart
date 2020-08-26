@@ -15,7 +15,9 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final Widget suffix;
   final bool readOnly;
   final bool obscureText;
+  final bool allowEmpty;
   final List<String> suggestion;
+  final void Function(String) onDeleteSuggestion;
   final void Function(String value) onSaved;
 
   FormItemTextField(
@@ -30,16 +32,19 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.suffix,
       this.dense = false,
       this.suggestion,
+      this.allowEmpty = false,
       this.enabled = true,
       this.readOnly = false,
       this.obscureText = false,
       this.counterText = "",
+      this.onDeleteSuggestion,
       this.onSaved});
 
   @override
   Widget build(BuildContext context) {
     return SuggestionOverlayBuilder(
         items: this.suggestion,
+        onDeleteSuggestion: this.onDeleteSuggestion,
         controller: this.controller,
         builder: (context, controller, onTap) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -80,7 +85,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 autovalidate: false,
                 onTap: this.enabled ? onTap : null,
                 validator: (value) {
-                  if (isEmpty(value)) return this.hintText;
+                  if (!this.allowEmpty && isEmpty(value)) return this.hintText;
                   return null;
                 },
                 onSaved: (value) {

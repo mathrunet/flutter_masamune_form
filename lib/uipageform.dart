@@ -26,7 +26,7 @@ abstract class UIPageForm extends UIPageScaffold
   }
 
   /// What happens when a form is submitted.
-  /// 
+  ///
   /// [context]: Build context.
   void onSubmit(BuildContext context);
 

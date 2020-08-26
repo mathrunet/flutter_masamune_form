@@ -10,6 +10,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
   final Widget suffix;
   final bool enabled;
   final bool dense;
+  final bool allowEmpty;
   final void Function(String value) onSave;
   final void Function(String value) onChanged;
 
@@ -21,6 +22,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
       this.dense = false,
       this.labelText = "",
       this.prefix,
+      this.allowEmpty = false,
       this.suffix,
       this.counterText = "",
       this.onSave,
@@ -64,7 +66,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
             ),
             autovalidate: false,
             validator: (value) {
-              if (isEmpty(value)) return this.hintText;
+              if (!this.allowEmpty && isEmpty(value)) return this.hintText;
               return null;
             },
             onChanged: (value) {

@@ -22,6 +22,8 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
   final bool dense;
   final List<String> suggestion;
   final bool enabled;
+  final bool allowEmpty;
+  final void Function(String) onDeleteSuggestion;
 
   FormItemDynamicLabeledDropdownField(
       {this.controller,
@@ -40,6 +42,8 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
       this.maxLength = 100,
       this.maxLines = 1,
       this.minLines = 1,
+      this.onDeleteSuggestion,
+      this.allowEmpty = false,
       this.hintText = "",
       this.readOnly = false,
       this.obscureText = false,
@@ -92,6 +96,7 @@ class _FormItemDynamicLabeledDropdownFieldState
     return SuggestionOverlayBuilder(
         items: this.widget.suggestion,
         controller: this._textController,
+        onDeleteSuggestion: this.widget.onDeleteSuggestion,
         builder: (context, controller, onTap) => Padding(
             padding: this.widget.dense
                 ? const EdgeInsets.all(0)
@@ -141,7 +146,8 @@ class _FormItemDynamicLabeledDropdownFieldState
                   autovalidate: false,
                   onTap: this.widget.enabled ? onTap : null,
                   validator: (value) {
-                    if (isEmpty(value)) return this.widget.hintText;
+                    if (!this.widget.allowEmpty && isEmpty(value))
+                      return this.widget.hintText;
 
                     if (this.widget.validator != null)
                       return this.widget.validator(
