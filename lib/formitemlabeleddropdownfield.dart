@@ -8,7 +8,7 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
   final bool enabled;
   final Widget suffix;
   final bool dense;
-  final void Function(String value) onSave;
+  final void Function(String value) onSaved;
   final void Function(String value) onChanged;
 
   FormItemLabeledDropdownField(
@@ -19,7 +19,7 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
       this.dense = false,
       this.enabled = true,
       this.suffix,
-      this.onSave,
+      this.onSaved,
       this.onChanged});
 
   @override
@@ -65,7 +65,7 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
                   },
                   onSaved: (value) {
                     if (isEmpty(value)) return;
-                    if (this.onSave != null) this.onSave(value);
+                    if (this.onSaved != null) this.onSaved(value);
                   }))
         ]));
   }

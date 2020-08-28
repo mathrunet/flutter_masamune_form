@@ -8,7 +8,7 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
   final Widget prefix;
   final Widget suffix;
   final String Function(String key, String value) validator;
-  final void Function(String key, String value) onSave;
+  final void Function(String key, String value) onSaved;
   final void Function(String key, String value) onChanged;
   final TextInputType keyboardType;
   final int maxLength;
@@ -31,7 +31,7 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
       this.labelText = "",
       this.prefix,
       this.suffix,
-      this.onSave,
+      this.onSaved,
       this.dense = false,
       this.onChanged,
       this.enabled = true,
@@ -159,9 +159,9 @@ class _FormItemDynamicLabeledDropdownFieldState
                     return null;
                   },
                   onSaved: (value) {
-                    if (isEmpty(value)) return;
-                    if (this.widget.onSave != null)
-                      this.widget.onSave(
+                    if (!this.widget.allowEmpty && isEmpty(value)) return;
+                    if (this.widget.onSaved != null)
+                      this.widget.onSaved(
                           value,
                           isEmpty(this._dropdownController.text)
                               ? (this.widget.items?.entries?.first?.key ??

@@ -115,6 +115,8 @@ class _FormItemImageState extends FormFieldState<String> {
   }
 
   Widget _buildImage(BuildContext context) {
+    String value = this._effectiveController?.text;
+    if (isNotEmpty(this.widget.initialValue)) value = this.widget.initialValue;
     if (this._data != null) {
       return Container(
           padding: this.widget.dense
@@ -125,8 +127,8 @@ class _FormItemImageState extends FormFieldState<String> {
             borderRadius: BorderRadius.circular(this.widget.dense ? 0 : 8.0),
             child: Image.file(this._data, fit: BoxFit.cover),
           ));
-    } else if (isNotEmpty(this.widget.initialValue)) {
-      if (this.widget.initialValue.startsWith("http")) {
+    } else if (isNotEmpty(value)) {
+      if (value.startsWith("http")) {
         return Container(
             padding: this.widget.dense
                 ? const EdgeInsets.all(0)
@@ -134,10 +136,10 @@ class _FormItemImageState extends FormFieldState<String> {
             constraints: const BoxConstraints.expand(height: 200),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(this.widget.dense ? 0 : 8.0),
-              child: Image.network(this.widget.initialValue, fit: BoxFit.cover),
+              child: Image.network(value, fit: BoxFit.cover),
             ));
       } else {
-        if (this._local == null) this._local = File(this.widget.initialValue);
+        if (this._local == null) this._local = File(value);
         return Container(
             padding: this.widget.dense
                 ? const EdgeInsets.all(0)

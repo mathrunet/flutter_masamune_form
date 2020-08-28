@@ -110,9 +110,13 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
       : this._format = format,
         this._onShowPicker = onShowPicker {
     if (this.controller == null) return;
-    this.controller.text = this.format == null
-        ? this.initialDateTime.toIso8601String()
-        : this.format.format(this.initialDateTime);
+    if (this.initialDateTime != null) {
+      this.controller.text = this.format == null
+          ? this.initialDateTime.toIso8601String()
+          : this.format.format(this.initialDateTime);
+    } else {
+      this.controller.text = Const.empty;
+    }
   }
 
   @override
@@ -157,7 +161,7 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
             return null;
           },
           onSaved: (value) {
-            if (isEmpty(value)) return;
+            if (!this.allowEmpty && isEmpty(value)) return;
             if (this.onSaved != null) this.onSaved(value);
           },
           onShowPicker:

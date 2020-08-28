@@ -89,7 +89,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                   return null;
                 },
                 onSaved: (value) {
-                  if (isEmpty(value)) return;
+                  if (!this.allowEmpty && isEmpty(value)) return;
                   if (this.onSaved != null) this.onSaved(value);
                 })));
   }
