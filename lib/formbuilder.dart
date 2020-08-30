@@ -35,9 +35,14 @@ class FormBuilder extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: this.children));
       default:
-        return ListView(
+        return Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            children: this.children);
+            child: SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: this.children)));
     }
   }
 }

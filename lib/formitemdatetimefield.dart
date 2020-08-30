@@ -1,6 +1,6 @@
 part of masamune.form;
 
-class FormItemDateTimeField extends StatelessWidget implements FormItem {
+class FormItemDateTimeField extends StatefulWidget implements FormItem {
   /// Calculate formatted datetime string from [millisecondsSinceEpoch].
   static String formatDateTime(int millisecondsSinceEpoch,
           {String format = "yyyy/MM/dd(E) HH:mm:ss",
@@ -108,64 +108,79 @@ class FormItemDateTimeField extends StatelessWidget implements FormItem {
       Future<DateTime> onShowPicker(BuildContext context, DateTime dateTime),
       this.onSaved})
       : this._format = format,
-        this._onShowPicker = onShowPicker {
-    if (this.controller == null) return;
-    if (this.initialDateTime != null) {
-      this.controller.text = this.format == null
-          ? this.initialDateTime.toIso8601String()
-          : this.format.format(this.initialDateTime);
+        this._onShowPicker = onShowPicker {}
+  @override
+  State<StatefulWidget> createState() => _FormItemDateTimeFieldState();
+}
+
+class _FormItemDateTimeFieldState extends State<FormItemDateTimeField> {
+  @override
+  void initState() {
+    super.initState();
+    if (this.widget.controller == null) return;
+    if (this.widget.initialDateTime != null) {
+      this.widget.controller.text = this.widget.format == null
+          ? this.widget.initialDateTime.toIso8601String()
+          : this.widget.format.format(this.widget.initialDateTime);
     } else {
-      this.controller.text = Const.empty;
+      this.widget.controller.text = Const.empty;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: this.dense
+        padding: this.widget.dense
             ? const EdgeInsets.all(0)
             : const EdgeInsets.symmetric(vertical: 10),
         child: DateTimeTextFormField(
-          controller: this.controller,
+          controller: this.widget.controller,
           keyboardType: TextInputType.text,
-          initialValue: this.initialDateTime,
-          maxLength: this.maxLength,
-          maxLines: this.maxLines,
-          enabled: this.enabled,
-          minLines: this.minLines,
+          initialValue: this.widget.initialDateTime,
+          maxLength: this.widget.maxLength,
+          maxLines: this.widget.maxLines,
+          enabled: this.widget.enabled,
+          minLines: this.widget.minLines,
           decoration: InputDecoration(
             border: OutlineInputBorder(
-                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+                borderSide:
+                    this.widget.dense ? BorderSide.none : const BorderSide()),
             enabledBorder: OutlineInputBorder(
-                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+                borderSide:
+                    this.widget.dense ? BorderSide.none : const BorderSide()),
             disabledBorder: OutlineInputBorder(
-                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+                borderSide:
+                    this.widget.dense ? BorderSide.none : const BorderSide()),
             errorBorder: OutlineInputBorder(
-                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+                borderSide:
+                    this.widget.dense ? BorderSide.none : const BorderSide()),
             focusedBorder: OutlineInputBorder(
-                borderSide: this.dense ? BorderSide.none : const BorderSide()),
+                borderSide:
+                    this.widget.dense ? BorderSide.none : const BorderSide()),
             focusedErrorBorder: OutlineInputBorder(
-                borderSide: this.dense ? BorderSide.none : const BorderSide()),
-            hintText: this.hintText,
-            counterText: this.counterText,
-            labelText: this.labelText,
-            prefix: this.prefix,
-            suffix: this.suffix,
+                borderSide:
+                    this.widget.dense ? BorderSide.none : const BorderSide()),
+            hintText: this.widget.hintText,
+            counterText: this.widget.counterText,
+            labelText: this.widget.labelText,
+            prefix: this.widget.prefix,
+            suffix: this.widget.suffix,
           ),
-          obscureText: this.obscureText,
-          readOnly: this.readOnly,
-          format: this.format,
+          obscureText: this.widget.obscureText,
+          readOnly: this.widget.readOnly,
+          format: this.widget.format,
           autovalidate: false,
           validator: (value) {
-            if (!this.allowEmpty && isEmpty(value)) return this.hintText;
+            if (!this.widget.allowEmpty && isEmpty(value))
+              return this.widget.hintText;
             return null;
           },
           onSaved: (value) {
-            if (!this.allowEmpty && isEmpty(value)) return;
-            if (this.onSaved != null) this.onSaved(value);
+            if (!this.widget.allowEmpty && isEmpty(value)) return;
+            if (this.widget.onSaved != null) this.widget.onSaved(value);
           },
-          onShowPicker:
-              this.onShowPicker ?? DateTimeTextFormField.dateTimePicker(),
+          onShowPicker: this.widget.onShowPicker ??
+              DateTimeTextFormField.dateTimePicker(),
         ));
   }
 }
