@@ -2,6 +2,10 @@ part of masamune.form;
 
 class FormItemDynamicLabeledDropdownField extends StatefulWidget
     implements FormItem {
+  static String value(String key, String value) {
+    return "$key:$value";
+  }
+
   final TextEditingController controller;
   final String labelText;
   final Map<String, String> items;
