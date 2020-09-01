@@ -75,6 +75,8 @@ class _FormItemDynamicLabeledDropdownFieldState
       this._textController = TextEditingController();
       this._dropdownController = TextEditingController();
     }
+    if (this.widget.controller != null)
+      this.widget.controller.addListener(this._listnerController);
     this._textController.addListener(this._listener);
     this._dropdownController.addListener(this._listener);
   }
@@ -93,6 +95,47 @@ class _FormItemDynamicLabeledDropdownFieldState
     super.dispose();
     this._textController.removeListener(this._listener);
     this._dropdownController.removeListener(this._listener);
+    if (this.widget.controller != null)
+      this.widget.controller.removeListener(this._listnerController);
+  }
+
+  void _listnerController() {
+    if (this.widget.controller != null &&
+        isNotEmpty(this.widget.controller.text)) {
+      final tmp = this.widget.controller.text.split(Const.colon);
+      if (this._textController.text != tmp.first)
+        this._textController.text = tmp.first;
+      if (this._dropdownController.text != tmp.last)
+        this._dropdownController.text = tmp.last;
+    } else {
+      if (this._textController.text != Const.empty)
+        this._textController.text = Const.empty;
+      if (this._dropdownController.text != Const.empty)
+        this._dropdownController.text = Const.empty;
+    }
+  }
+
+  @override
+  void didUpdateWidget(FormItemDynamicLabeledDropdownField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != this.widget.controller) {
+      oldWidget.controller?.removeListener(this._listnerController);
+      this.widget.controller?.addListener(this._listnerController);
+      if (this.widget.controller != null &&
+          isNotEmpty(this.widget.controller.text)) {
+        final tmp = this.widget.controller.text.split(Const.colon);
+        if (this._textController.text != tmp.first)
+          this._textController.text = tmp.first;
+        if (this._dropdownController.text != tmp.last)
+          this._dropdownController.text = tmp.last;
+      } else {
+        if (this._textController.text != Const.empty)
+          this._textController.text = Const.empty;
+        if (this._dropdownController.text != Const.empty)
+          this._dropdownController.text = Const.empty;
+      }
+      this.setState(() {});
+    }
   }
 
   @override
