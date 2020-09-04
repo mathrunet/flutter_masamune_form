@@ -16,9 +16,13 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final bool readOnly;
   final bool obscureText;
   final bool allowEmpty;
+  final InputBorder border;
+  final InputBorder disabledBorder;
   final List<String> suggestion;
   final void Function(String) onDeleteSuggestion;
   final void Function(String value) onSaved;
+  final Color color;
+  final Color subColor;
 
   FormItemTextField(
       {this.controller,
@@ -26,6 +30,8 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.maxLength = 100,
       this.maxLines = 1,
       this.minLines = 1,
+      this.border,
+      this.disabledBorder,
       this.hintText = "",
       this.labelText = "",
       this.prefix,
@@ -38,7 +44,9 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.obscureText = false,
       this.counterText = "",
       this.onDeleteSuggestion,
-      this.onSaved});
+      this.onSaved,
+      this.color,
+      this.subColor});
 
   @override
   Widget build(BuildContext context) {
@@ -56,30 +64,50 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 maxLines: this.maxLines,
                 minLines: this.minLines,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderSide:
-                          this.dense ? BorderSide.none : const BorderSide()),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          this.dense ? BorderSide.none : const BorderSide()),
-                  disabledBorder: OutlineInputBorder(
-                      borderSide:
-                          this.dense ? BorderSide.none : const BorderSide()),
-                  errorBorder: OutlineInputBorder(
-                      borderSide:
-                          this.dense ? BorderSide.none : const BorderSide()),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          this.dense ? BorderSide.none : const BorderSide()),
-                  focusedErrorBorder: OutlineInputBorder(
-                      borderSide:
-                          this.dense ? BorderSide.none : const BorderSide()),
+                  border: this.border ??
+                      OutlineInputBorder(
+                          borderSide: this.dense
+                              ? BorderSide.none
+                              : const BorderSide()),
+                  enabledBorder: this.border ??
+                      OutlineInputBorder(
+                          borderSide: this.dense
+                              ? BorderSide.none
+                              : const BorderSide()),
+                  disabledBorder: this.disabledBorder ??
+                      this.border ??
+                      OutlineInputBorder(
+                          borderSide: this.dense
+                              ? BorderSide.none
+                              : const BorderSide()),
+                  errorBorder: this.border ??
+                      OutlineInputBorder(
+                          borderSide: this.dense
+                              ? BorderSide.none
+                              : const BorderSide()),
+                  focusedBorder: this.border ??
+                      OutlineInputBorder(
+                          borderSide: this.dense
+                              ? BorderSide.none
+                              : const BorderSide()),
+                  focusedErrorBorder: this.border ??
+                      OutlineInputBorder(
+                          borderSide: this.dense
+                              ? BorderSide.none
+                              : const BorderSide()),
                   hintText: this.hintText,
                   labelText: this.labelText,
                   counterText: this.counterText,
                   prefix: this.prefix,
                   suffix: this.suffix,
+                  labelStyle: TextStyle(color: this.color),
+                  hintStyle: TextStyle(color: this.subColor),
+                  suffixStyle: TextStyle(color: this.subColor),
+                  prefixStyle: TextStyle(color: this.subColor),
+                  counterStyle: TextStyle(color: this.subColor),
+                  helperStyle: TextStyle(color: this.subColor),
                 ),
+                style: TextStyle(color: this.color),
                 obscureText: this.obscureText,
                 readOnly: this.readOnly,
                 autovalidate: false,
