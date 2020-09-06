@@ -21,6 +21,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final List<String> suggestion;
   final void Function(String) onDeleteSuggestion;
   final void Function(String value) onSaved;
+  final EdgeInsetsGeometry padding;
   final Color color;
   final Color subColor;
 
@@ -37,6 +38,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.prefix,
       this.suffix,
       this.dense = false,
+      this.padding,
       this.suggestion,
       this.allowEmpty = false,
       this.enabled = true,
@@ -55,7 +57,9 @@ class FormItemTextField extends StatelessWidget implements FormItem {
         onDeleteSuggestion: this.onDeleteSuggestion,
         controller: this.controller,
         builder: (context, controller, onTap) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: this.dense
+                ? const EdgeInsets.all(0)
+                : (this.padding ?? const EdgeInsets.symmetric(vertical: 10)),
             child: TextFormField(
                 enabled: this.enabled,
                 controller: controller,
@@ -64,6 +68,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 maxLines: this.maxLines,
                 minLines: this.minLines,
                 decoration: InputDecoration(
+                  isDense: this.dense,
                   border: this.border ??
                       OutlineInputBorder(
                           borderSide: this.dense
