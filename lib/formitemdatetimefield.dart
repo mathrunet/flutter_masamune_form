@@ -166,6 +166,7 @@ class _FormItemDateTimeFieldState extends State<FormItemDateTimeField> {
             prefix: this.widget.prefix,
             suffix: this.widget.suffix,
           ),
+          style: Config.isIOS ? TextStyle(fontSize: 13) : null,
           obscureText: this.widget.obscureText,
           readOnly: this.widget.readOnly,
           format: this.widget.format,
