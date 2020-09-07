@@ -17,6 +17,7 @@ class FormItemAvatarImage extends StatelessWidget implements FormItem {
   @override
   Widget build(BuildContext context) {
     return Container(
+        alignment: Alignment.center,
         padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
