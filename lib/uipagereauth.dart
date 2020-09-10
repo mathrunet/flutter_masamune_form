@@ -64,7 +64,7 @@ class UIPageReAuth extends UIPageForm {
   /// What happens when a form is submitted.
   @override
   void onSubmit(BuildContext context) async {
-    if (!this.validate()) return;
+    if (!this.validate(context)) return;
     context.navigator.pushReplacementNamed(this.data.getString("redirect_to"));
   }
 }

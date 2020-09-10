@@ -63,7 +63,7 @@ class UIPageChangeEmail extends UIPageForm {
   /// What happens when a form is submitted.
   @override
   void onSubmit(BuildContext context) async {
-    if (!this.validate()) return;
+    if (!this.validate(context)) return;
     UIDialog.show(context,
         title: "Success".localize(),
         text: "Editing is complete.".localize(),
