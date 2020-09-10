@@ -2,7 +2,9 @@ part of masamune.form;
 
 /// Form item for uploading an image.
 class FormItemImage extends FormField<String> {
-  final void Function(void Function(File) onUpdate) onTap;
+  /// Processing when tapped.
+  /// Finally save the file using onUpdate.
+  final void Function(void Function(dynamic fileOrUrl) onUpdate) onTap;
 
   /// The overall color if you have not uploaded an image.
   final Color color;
@@ -60,6 +62,7 @@ class _FormItemImageState extends FormFieldState<String> {
   TextEditingController _controller;
   File _data;
   File _local;
+  String _path;
 
   TextEditingController get _effectiveController =>
       widget.controller ?? _controller;
@@ -67,12 +70,23 @@ class _FormItemImageState extends FormFieldState<String> {
   @override
   FormItemImage get widget => super.widget as FormItemImage;
 
-  void _onUpdate(File file) {
-    if (file == null || isEmpty(file.path)) return;
-    this.setState(() {
-      this.setValue(file.path);
-      this._data = file;
-    });
+  void _onUpdate(dynamic fileOrUrl) {
+    if (fileOrUrl == null) return;
+    if (fileOrUrl is String) {
+      if (isEmpty(fileOrUrl)) return;
+      this.setState(() {
+        this.setValue(fileOrUrl);
+        this._path = fileOrUrl;
+        this._data = null;
+      });
+    } else if (fileOrUrl is File) {
+      if (isEmpty(fileOrUrl.path)) return;
+      this.setState(() {
+        this.setValue(fileOrUrl.path);
+        this._data = fileOrUrl;
+        this._path = null;
+      });
+    }
   }
 
   @override
@@ -127,6 +141,17 @@ class _FormItemImageState extends FormFieldState<String> {
             borderRadius: BorderRadius.circular(this.widget.dense ? 0 : 8.0),
             child: Image.file(this._data, fit: BoxFit.cover),
           ));
+    } else if (this._path != null) {
+      return Container(
+          padding: this.widget.dense
+              ? const EdgeInsets.all(0)
+              : const EdgeInsets.symmetric(vertical: 10),
+          constraints: const BoxConstraints.expand(height: 200),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(this.widget.dense ? 0 : 8.0),
+            child: Image(
+                image: NetworkOrAsset.image(this._path), fit: BoxFit.cover),
+          ));
     } else if (isNotEmpty(value)) {
       if (value.startsWith("http")) {
         return Container(
@@ -136,7 +161,8 @@ class _FormItemImageState extends FormFieldState<String> {
             constraints: const BoxConstraints.expand(height: 200),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(this.widget.dense ? 0 : 8.0),
-              child: Image.network(value, fit: BoxFit.cover),
+              child:
+                  Image(image: NetworkOrAsset.image(value), fit: BoxFit.cover),
             ));
       } else {
         if (this._local == null) this._local = File(value);
