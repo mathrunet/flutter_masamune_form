@@ -55,6 +55,7 @@ class FormItemDateTimeField extends StatefulWidget implements FormItem {
   final bool readOnly;
   final bool allowEmpty;
   final bool obscureText;
+  final Color backgroundColor;
   final DateTime initialDateTime;
   final DateFormat _format;
   final bool enabled;
@@ -90,8 +91,9 @@ class FormItemDateTimeField extends StatefulWidget implements FormItem {
       {this.controller,
       this.keyboardType = TextInputType.text,
       this.maxLength = 100,
-      this.maxLines = 1,
+      this.maxLines,
       this.minLines = 1,
+      this.backgroundColor,
       this.hintText = "",
       this.labelText = "",
       this.counterText = "",
@@ -108,7 +110,7 @@ class FormItemDateTimeField extends StatefulWidget implements FormItem {
       Future<DateTime> onShowPicker(BuildContext context, DateTime dateTime),
       this.onSaved})
       : this._format = format,
-        this._onShowPicker = onShowPicker {}
+        this._onShowPicker = onShowPicker;
   @override
   State<StatefulWidget> createState() => _FormItemDateTimeFieldState();
 }
@@ -142,6 +144,8 @@ class _FormItemDateTimeFieldState extends State<FormItemDateTimeField> {
           enabled: this.widget.enabled,
           minLines: this.widget.minLines,
           decoration: InputDecoration(
+            fillColor: this.widget.backgroundColor,
+            filled: this.widget.backgroundColor != null,
             border: OutlineInputBorder(
                 borderSide:
                     this.widget.dense ? BorderSide.none : const BorderSide()),

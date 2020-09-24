@@ -34,7 +34,7 @@ class UIFormDialog {
     if (context == null) return;
     String _title = context.read(dialogTitlePath, defaultValue: title);
     if (_title == null || children == null) return;
-    final Key key = GlobalKey<FormState>();
+    final GlobalKey<FormState> key = GlobalKey<FormState>();
     OverlayState overlay = context.navigator.overlay;
     await showDialog(
         context: overlay.context,
@@ -55,16 +55,18 @@ class UIFormDialog {
                         backgroundColor: submitBackgroundColor,
                         borderRadius: submitBorderRadius,
                         onPressed: () {
+                          if (!key.currentState.validate()) return;
+                          key.currentState.save();
                           PathMap.removeAllPath([
                             dialogTitlePath,
                             dialogSubmitTextPath,
                             dialogSubmitActionPath,
                             dialogSubmitTextPath
                           ]);
-                          if (popOnPress)
-                            Navigator.of(context, rootNavigator: true).pop();
                           context.readAction(dialogSubmitActionPath,
                               defaultAction: onSubmit)();
+                          if (popOnPress)
+                            Navigator.of(context, rootNavigator: true).pop();
                         },
                       )
                     ],

@@ -24,8 +24,11 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
   final bool obscureText;
   final String separator;
   final bool dense;
+  final Color backgroundColor;
+  final Color dropdownColor;
   final List<String> suggestion;
   final bool enabled;
+  final double dropdownWidth;
   final bool allowEmpty;
   final void Function(String) onDeleteSuggestion;
 
@@ -36,7 +39,10 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
       this.prefix,
       this.suffix,
       this.onSaved,
+      this.dropdownWidth = 100,
       this.dense = false,
+      this.backgroundColor,
+      this.dropdownColor,
       this.onChanged,
       this.enabled = true,
       this.suggestion,
@@ -44,7 +50,7 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
       this.separator = Const.colon,
       this.keyboardType = TextInputType.text,
       this.maxLength = 100,
-      this.maxLines = 1,
+      this.maxLines,
       this.minLines = 1,
       this.onDeleteSuggestion,
       this.allowEmpty = false,
@@ -144,113 +150,129 @@ class _FormItemDynamicLabeledDropdownFieldState
         items: this.widget.suggestion,
         controller: this._textController,
         onDeleteSuggestion: this.widget.onDeleteSuggestion,
-        builder: (context, controller, onTap) => Padding(
+        builder: (context, controller, onTap) => Container(
+            height: this.widget.dense ? 60 : 80,
             padding: this.widget.dense
                 ? const EdgeInsets.all(0)
                 : const EdgeInsets.symmetric(vertical: 10),
-            child: Stack(children: [
-              TextFormField(
-                  enabled: this.widget.enabled,
-                  controller: controller,
-                  keyboardType: TextInputType.text,
-                  maxLength: this.widget.maxLength,
-                  maxLines: this.widget.maxLines,
-                  minLines: this.widget.minLines,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: this.widget.dense
-                            ? BorderSide.none
-                            : const BorderSide()),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: this.widget.dense
-                            ? BorderSide.none
-                            : const BorderSide()),
-                    disabledBorder: OutlineInputBorder(
-                        borderSide: this.widget.dense
-                            ? BorderSide.none
-                            : const BorderSide()),
-                    errorBorder: OutlineInputBorder(
-                        borderSide: this.widget.dense
-                            ? BorderSide.none
-                            : const BorderSide()),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: this.widget.dense
-                            ? BorderSide.none
-                            : const BorderSide()),
-                    focusedErrorBorder: OutlineInputBorder(
-                        borderSide: this.widget.dense
-                            ? BorderSide.none
-                            : const BorderSide()),
-                    hintText: this.widget.hintText,
-                    labelText: this.widget.labelText,
-                    counterText: this.widget.counterText,
-                    contentPadding: const EdgeInsets.only(
-                        top: 20, left: 12, bottom: 20, right: 108),
-                    prefix: this.widget.prefix,
-                  ),
-                  obscureText: this.widget.obscureText,
-                  readOnly: this.widget.readOnly,
-                  autovalidate: false,
-                  onTap: this.widget.enabled ? onTap : null,
-                  validator: (value) {
-                    if (!this.widget.allowEmpty && isEmpty(value))
-                      return this.widget.hintText;
+            child: Stack(
+                alignment: AlignmentDirectional.centerStart,
+                fit: StackFit.expand,
+                children: [
+                  TextFormField(
+                      enabled: this.widget.enabled,
+                      controller: controller,
+                      keyboardType: TextInputType.text,
+                      maxLength: this.widget.maxLength,
+                      maxLines: this.widget.maxLines,
+                      minLines: this.widget.minLines,
+                      decoration: InputDecoration(
+                        fillColor: this.widget.backgroundColor,
+                        filled: this.widget.backgroundColor != null,
+                        border: OutlineInputBorder(
+                            borderSide: this.widget.dense
+                                ? BorderSide.none
+                                : const BorderSide()),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: this.widget.dense
+                                ? BorderSide.none
+                                : const BorderSide()),
+                        disabledBorder: OutlineInputBorder(
+                            borderSide: this.widget.dense
+                                ? BorderSide.none
+                                : const BorderSide()),
+                        errorBorder: OutlineInputBorder(
+                            borderSide: this.widget.dense
+                                ? BorderSide.none
+                                : const BorderSide()),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: this.widget.dense
+                                ? BorderSide.none
+                                : const BorderSide()),
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderSide: this.widget.dense
+                                ? BorderSide.none
+                                : const BorderSide()),
+                        hintText: this.widget.hintText,
+                        labelText: this.widget.labelText,
+                        counterText: this.widget.counterText,
+                        contentPadding: EdgeInsets.only(
+                            top: 20,
+                            left: 12,
+                            bottom: 20,
+                            right: this.widget.dropdownWidth + 12),
+                        prefix: this.widget.prefix,
+                      ),
+                      obscureText: this.widget.obscureText,
+                      readOnly: this.widget.readOnly,
+                      autovalidate: false,
+                      onTap: this.widget.enabled ? onTap : null,
+                      validator: (value) {
+                        if (!this.widget.allowEmpty && isEmpty(value))
+                          return this.widget.hintText;
 
-                    if (this.widget.validator != null)
-                      return this.widget.validator(
-                          value,
-                          isEmpty(this._dropdownController.text)
-                              ? (this.widget.items?.entries?.first?.key ??
-                                  Const.empty)
-                              : this._dropdownController.text);
-                    return null;
-                  },
-                  onSaved: (value) {
-                    if (!this.widget.allowEmpty && isEmpty(value)) return;
-                    if (this.widget.onSaved != null)
-                      this.widget.onSaved(
-                          value,
-                          isEmpty(this._dropdownController.text)
-                              ? (this.widget.items?.entries?.first?.key ??
-                                  Const.empty)
-                              : this._dropdownController.text);
-                  }),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                      width: 100,
-                      height: 60,
-                      padding: const EdgeInsets.only(right: 10),
+                        if (this.widget.validator != null)
+                          return this.widget.validator(
+                              value,
+                              isEmpty(this._dropdownController.text)
+                                  ? (this.widget.items?.entries?.first?.key ??
+                                      Const.empty)
+                                  : this._dropdownController.text);
+                        return null;
+                      },
+                      onSaved: (value) {
+                        if (!this.widget.allowEmpty && isEmpty(value)) return;
+                        if (this.widget.onSaved != null)
+                          this.widget.onSaved(
+                              value,
+                              isEmpty(this._dropdownController.text)
+                                  ? (this.widget.items?.entries?.first?.key ??
+                                      Const.empty)
+                                  : this._dropdownController.text);
+                      }),
+                  Align(
                       alignment: Alignment.centerRight,
-                      child: DropdownTextFormField(
-                          controller: this._dropdownController,
-                          items: this.widget.items,
-                          enabled: this.widget.enabled,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1.color,
-                              height: 1.25),
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none),
-                          autovalidate: false,
-                          onChanged: (value) {
-                            if (this.widget.onChanged != null)
-                              this.widget.onChanged(
-                                  this._textController.text,
-                                  isEmpty(value)
-                                      ? (this
-                                              .widget
-                                              .items
-                                              ?.entries
-                                              ?.first
-                                              ?.key ??
-                                          Const.empty)
-                                      : value);
-                          }))),
-            ])));
+                      child: Container(
+                          width: this.widget.dropdownWidth,
+                          margin: const EdgeInsets.fromLTRB(0, 2, 1, 2),
+                          decoration: BoxDecoration(
+                              color: this.widget.dropdownColor,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(4.0),
+                                  bottomRight: Radius.circular(4.0))),
+                          padding: const EdgeInsets.fromLTRB(12, 4.5, 8, 4.5),
+                          alignment: Alignment.centerRight,
+                          child: DropdownTextFormField(
+                              controller: this._dropdownController,
+                              items: this.widget.items,
+                              enabled: this.widget.enabled,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .color,
+                                  height: 1.25),
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none),
+                              autovalidate: false,
+                              onChanged: (value) {
+                                if (this.widget.onChanged != null)
+                                  this.widget.onChanged(
+                                      this._textController.text,
+                                      isEmpty(value)
+                                          ? (this
+                                                  .widget
+                                                  .items
+                                                  ?.entries
+                                                  ?.first
+                                                  ?.key ??
+                                              Const.empty)
+                                          : value);
+                              }))),
+                ])));
   }
 }

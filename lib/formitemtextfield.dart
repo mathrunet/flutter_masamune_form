@@ -19,6 +19,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final InputBorder border;
   final InputBorder disabledBorder;
   final List<String> suggestion;
+  final Color backgroundColor;
   final void Function(String) onDeleteSuggestion;
   final void Function(String value) onSaved;
   final EdgeInsetsGeometry padding;
@@ -29,10 +30,11 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       {this.controller,
       this.keyboardType = TextInputType.text,
       this.maxLength = 100,
-      this.maxLines = 1,
+      this.maxLines,
       this.minLines = 1,
       this.border,
       this.disabledBorder,
+      this.backgroundColor,
       this.hintText = "",
       this.labelText = "",
       this.prefix,
@@ -68,6 +70,8 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 maxLines: this.maxLines,
                 minLines: this.minLines,
                 decoration: InputDecoration(
+                  fillColor: this.backgroundColor,
+                  filled: this.backgroundColor != null,
                   isDense: this.dense,
                   border: this.border ??
                       OutlineInputBorder(

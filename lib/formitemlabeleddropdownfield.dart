@@ -8,6 +8,8 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
   final bool enabled;
   final Widget suffix;
   final bool dense;
+  final Color backgroundColor;
+  final double dropdownWidth;
   final void Function(String value) onSaved;
   final void Function(String value) onChanged;
 
@@ -16,6 +18,8 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
       @required this.items,
       this.labelText = "",
       this.prefix,
+      this.dropdownWidth = 100,
+      this.backgroundColor,
       this.dense = false,
       this.enabled = true,
       this.suffix,
@@ -25,6 +29,7 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
   @override
   Widget build(BuildContext context) {
     return Container(
+        height: 60,
         decoration: BoxDecoration(
             border: Border.all(
                 color: Theme.of(context).disabledColor,
@@ -33,17 +38,21 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
         margin: this.dense
             ? const EdgeInsets.all(0)
             : const EdgeInsets.symmetric(vertical: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4.5),
         child: Row(children: [
           Expanded(
-              flex: 4,
-              child: Text(this.labelText,
-                  style: TextStyle(
-                      color: this.enabled
-                          ? null
-                          : Theme.of(context).disabledColor))),
-          Flexible(
-              flex: 1,
+              flex: 3,
+              child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 12, top: 4.5, bottom: 4.5),
+                  child: Text(this.labelText,
+                      style: TextStyle(
+                          color: this.enabled
+                              ? null
+                              : Theme.of(context).disabledColor)))),
+          Container(
+              constraints: BoxConstraints.expand(width: this.dropdownWidth),
+              color: this.backgroundColor,
+              padding: const EdgeInsets.fromLTRB(12, 4.5, 8, 4.5),
               child: DropdownTextFormField(
                   controller: this.controller,
                   items: this.items,
@@ -53,7 +62,6 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
                       color: Theme.of(context).textTheme.bodyText1.color,
                       height: 1.25),
                   decoration: InputDecoration(
-                      border: InputBorder.none,
                       disabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,

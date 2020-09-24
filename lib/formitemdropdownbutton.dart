@@ -23,6 +23,9 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
   /// True for dense.
   final bool dense;
 
+  /// Background color.
+  final Color backgroundColor;
+
   /// Widget that displays a dropdown button and generates an action when tapped.
   ///
   /// [onTap]: Action when tapped.
@@ -31,8 +34,10 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
   /// [initialValue]: First value.
   /// [decoration]: Input form decoration.
   /// [dense]: True for dense.
+  /// [backgroundColor]: Background color.
   FormItemDropdownButton(
       {@required this.onTap,
+      this.backgroundColor,
       this.controller,
       this.enabled = true,
       this.initialValue,
@@ -55,6 +60,7 @@ class FormItemDropdownButton extends StatelessWidget implements FormItem {
           padding: const EdgeInsets.all(12),
           decoration: this.decoration ??
               BoxDecoration(
+                color: this.backgroundColor,
                 border: Border.all(
                     color: context.theme.disabledColor,
                     style: this.dense ? BorderStyle.none : BorderStyle.solid),

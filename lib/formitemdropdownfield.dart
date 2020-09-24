@@ -11,6 +11,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
   final bool enabled;
   final bool dense;
   final bool allowEmpty;
+  final Color backgroundColor;
   final void Function(String value) onSaved;
   final void Function(String value) onChanged;
 
@@ -19,6 +20,7 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
       this.hintText = "",
       @required this.items,
       this.enabled = true,
+      this.backgroundColor,
       this.dense = false,
       this.labelText = "",
       this.prefix,
@@ -39,6 +41,8 @@ class FormItemDropdownField extends StatelessWidget implements FormItem {
             items: this.items,
             enabled: this.enabled,
             decoration: InputDecoration(
+              fillColor: this.backgroundColor,
+              filled: this.backgroundColor != null,
               border: OutlineInputBorder(
                   borderSide:
                       this.dense ? BorderSide.none : const BorderSide()),
