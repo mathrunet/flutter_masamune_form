@@ -54,6 +54,9 @@ abstract class UIPageForm extends UIPageScaffold
   /// Available for login and password reset page.
   FormBuilderType get formType => FormBuilderType.listView;
 
+  /// Specify the padding of the form.
+  EdgeInsetsGeometry get formPadding => null;
+
   /// Creating a body.
   ///
   /// [context]: Build context.
@@ -62,6 +65,7 @@ abstract class UIPageForm extends UIPageScaffold
     return FormBuilder(
         type: this.formType,
         key: this.formKey,
+        padding: this.formPadding,
         children: this.formBody(context, this.controllers, this.form));
   }
 }

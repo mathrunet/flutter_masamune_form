@@ -252,7 +252,7 @@ class _FormItemDynamicLabeledDropdownFieldState
                                       .textTheme
                                       .bodyText1
                                       .color,
-                                  height: 1.25),
+                                  height: 1.15),
                               decoration: InputDecoration(
                                   border: InputBorder.none,
                                   disabledBorder: InputBorder.none,

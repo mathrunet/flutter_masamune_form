@@ -60,7 +60,7 @@ class FormItemLabeledDropdownField extends StatelessWidget implements FormItem {
                   style: TextStyle(
                       fontSize: 20,
                       color: Theme.of(context).textTheme.bodyText1.color,
-                      height: 1.25),
+                      height: 1.15),
                   decoration: InputDecoration(
                       disabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
