@@ -29,7 +29,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   FormItemTextField(
       {this.controller,
       this.keyboardType = TextInputType.text,
-      this.maxLength = 100,
+      this.maxLength,
       this.maxLines,
       this.minLines = 1,
       this.border,

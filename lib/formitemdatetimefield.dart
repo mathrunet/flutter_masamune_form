@@ -90,7 +90,7 @@ class FormItemDateTimeField extends StatefulWidget implements FormItem {
   FormItemDateTimeField(
       {this.controller,
       this.keyboardType = TextInputType.text,
-      this.maxLength = 100,
+      this.maxLength,
       this.maxLines,
       this.minLines = 1,
       this.backgroundColor,

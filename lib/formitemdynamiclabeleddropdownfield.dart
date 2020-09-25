@@ -49,7 +49,7 @@ class FormItemDynamicLabeledDropdownField extends StatefulWidget
       this.validator,
       this.separator = Const.colon,
       this.keyboardType = TextInputType.text,
-      this.maxLength = 100,
+      this.maxLength,
       this.maxLines,
       this.minLines = 1,
       this.onDeleteSuggestion,
