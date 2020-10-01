@@ -15,6 +15,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
   final Widget suffix;
   final bool readOnly;
   final bool obscureText;
+  final bool expands;
   final bool allowEmpty;
   final InputBorder border;
   final InputBorder disabledBorder;
@@ -35,6 +36,7 @@ class FormItemTextField extends StatelessWidget implements FormItem {
       this.border,
       this.disabledBorder,
       this.backgroundColor,
+      this.expands = false,
       this.hintText = "",
       this.labelText = "",
       this.prefix,
@@ -67,8 +69,9 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 controller: controller,
                 keyboardType: this.keyboardType,
                 maxLength: this.maxLength,
-                maxLines: this.maxLines,
-                minLines: this.minLines,
+                maxLines: this.expands ? null : this.maxLines,
+                minLines: this.expands ? null : this.minLines,
+                expands: this.expands,
                 decoration: InputDecoration(
                   fillColor: this.backgroundColor,
                   filled: this.backgroundColor != null,
