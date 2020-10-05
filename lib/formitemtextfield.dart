@@ -69,9 +69,11 @@ class FormItemTextField extends StatelessWidget implements FormItem {
                 controller: controller,
                 keyboardType: this.keyboardType,
                 maxLength: this.maxLength,
-                maxLines: this.expands ? null : this.maxLines,
+                maxLines: this.obscureText
+                    ? 1
+                    : (this.expands ? null : this.maxLines),
                 minLines: this.expands ? null : this.minLines,
-                expands: this.expands,
+                expands: !this.obscureText && this.expands,
                 decoration: InputDecoration(
                   fillColor: this.backgroundColor,
                   filled: this.backgroundColor != null,
